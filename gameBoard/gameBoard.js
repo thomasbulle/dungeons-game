@@ -19,12 +19,38 @@ const init = () => {
   canvas.width = 450;
   canvas.height = 450;
   requestAnimationFrame(drawBoard);
+  controls();
 };
 
-function drawBoard() {
+const drawBoard = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   board.draw(ctx);
   requestAnimationFrame(drawBoard);
+}
+
+const controls = () => {
+  document.addEventListener('keydown', event => {
+    if (event.isComposing || event.keyCode === 37) {
+      player.move(-1, 0);
+      board.movePlayer(player.posX, player.posY, -1, 0, ctx);
+      return;
+    }
+    if (event.isComposing || event.keyCode === 38) {
+      player.move(0, -1);
+      board.movePlayer(player.posX, player.posY, 0, -1, ctx);
+      return;
+    }
+    if (event.isComposing || event.keyCode === 39) {
+      player.move(1, 0);
+      board.movePlayer(player.posX, player.posY, 1, 0, ctx);
+      return;
+    }
+    if (event.isComposing || event.keyCode === 40) {
+      player.move(0, 1);
+      board.movePlayer(player.posX, player.posY, 0, 1, ctx);
+      return;
+    }
+  });
 }
 
 window.onload = init;

@@ -49,6 +49,12 @@ class Board {
 
     this.monsters.map(monster => monster.draw(ctx));
   }
+
+  movePlayer(x, y, vx, vy, ctx) {
+    this.board[x][y].type = 'player';
+    this.board[x - vx][y - vy].type = 'road';
+    this.board[x - vx][y - vy].draw(ctx, x, y);
+  }
 }
 
 export default Board;
