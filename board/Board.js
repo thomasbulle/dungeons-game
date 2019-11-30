@@ -3,7 +3,7 @@ import Monster from '../entities/Monster.js';
 import config from '../config/config.js';
 import levels from './levels.js';
 
-export default class Board {
+class Board {
   constructor(width, height, level) {
     this.width = width;
     this.height = height;
@@ -50,3 +50,5 @@ export default class Board {
     this.monsters.map(monster => monster.draw(ctx));
   }
 }
+
+export default Board;

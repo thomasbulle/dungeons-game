@@ -1,6 +1,6 @@
 import { getBoxColor, drawImg } from '../helpers/draw.js';
 
-export default class Box {
+class Box {
   constructor(width, height, type) {
     this.width = width;
     this.height = height;
@@ -16,3 +16,5 @@ export default class Box {
     /road|player|wall/g.test(this.type) && drawImg(ctx, coefX, coefY, this.type);
   }
 }
+
+export default Box;
