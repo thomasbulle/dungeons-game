@@ -4,8 +4,11 @@ Escape from the dungeon !
 
 ## To start the project
 `clone the project`
+
 `cd dungeons-game`
+
 `npm i -g serve`
+
 `serve ./`
 
 
