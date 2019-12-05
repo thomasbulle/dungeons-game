@@ -148,11 +148,9 @@ export default [
         y: 8
       }
     ],
-    exit: [
-      {
-        x: 14,
-        y: 14
-      }
-    ]
+    exit: {
+      x: 14,
+      y: 14
+    }
   }
 ];

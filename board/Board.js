@@ -36,6 +36,11 @@ class Board {
       this.monsters[index] = new Monster(monster.x, monster.y);
     });
 
+    // place the exit
+    const exitX = levels[this.level].exit.x;
+    const exitY = levels[this.level].exit.y;
+    this.board[exitX][exitY].type = 'exit';
+
     // init player
     const posPlayerX = levels[this.level].player.x;
     const posPlayerY = levels[this.level].player.y;
@@ -52,6 +57,8 @@ class Board {
 
     this.monsters.map(monster => {
       monster.draw(ctx);
+
+      // Set the monster zone
       if (this.board[monster.posX + 1] && this.board[monster.posX + 1][monster.posY].type !== 'wall') {
         this.board[monster.posX + 1][monster.posY].type = 'monster'; 
       }
@@ -70,22 +77,18 @@ class Board {
   controls(ctx) {
     document.addEventListener('keydown', event => {
       if (event.isComposing || event.keyCode === 37) {
-        console.log('37')
         this.movePlayer(-1, 0, ctx);
         return;
       }
       if (event.isComposing || event.keyCode === 38) {
-        console.log('38')
         this.movePlayer(0, -1, ctx);
         return;
       }
       if (event.isComposing || event.keyCode === 39) {
-        console.log('39')
         this.movePlayer(1, 0, ctx);
         return;
       }
       if (event.isComposing || event.keyCode === 40) {
-        console.log('40')
         this.movePlayer(0, 1, ctx);
         return;
       }
@@ -102,6 +105,8 @@ class Board {
         this.player.move(vx, vy);
       } else if (this.board[posX + vx][posY + vy].type === 'monster') {
         console.log('Monster');
+      } else if (this.board[posX + vx][posY + vy].type === 'exit') {
+        console.log('Exit');
       } else {
         console.log('Obstacle');
       }
