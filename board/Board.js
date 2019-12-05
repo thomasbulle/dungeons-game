@@ -50,7 +50,21 @@ class Board {
       });
     });
 
-    this.monsters.map(monster => monster.draw(ctx));
+    this.monsters.map(monster => {
+      monster.draw(ctx);
+      if (this.board[monster.posX + 1] && this.board[monster.posX + 1][monster.posY].type !== 'wall') {
+        this.board[monster.posX + 1][monster.posY].type = 'monster'; 
+      }
+      if (this.board[monster.posX - 1] && this.board[monster.posX - 1][monster.posY].type !== 'wall') {
+        this.board[monster.posX - 1][monster.posY].type = 'monster';
+      }
+      if (this.board[monster.posX][monster.posY + 1] && this.board[monster.posX][monster.posY + 1].type !== 'wall') {
+        this.board[monster.posX][monster.posY + 1].type = 'monster';
+      }
+      if (this.board[monster.posX][monster.posY - 1] && this.board[monster.posX][monster.posY - 1].type !== 'wall') {
+        this.board[monster.posX][monster.posY - 1].type = 'monster';
+      }
+    });
   }
 
   controls(ctx) {
@@ -81,12 +95,18 @@ class Board {
   movePlayer(vx, vy, ctx) {
     const { posX, posY } = this.player;
 
-    if (this.board[posX + vx] && this.board[posX + vx][posY + vy] && this.board[posX + vx][posY + vy].type === 'road') {
-      this.board[posX + vx][posY + vy].type = 'player';
-      this.board[posX][posY].type = 'road';
-      this.player.move(vx, vy);
+    if (this.board[posX + vx] && this.board[posX + vx][posY + vy]) {
+      if (this.board[posX + vx][posY + vy].type === 'road') {
+        this.board[posX + vx][posY + vy].type = 'player';
+        this.board[posX][posY].type = 'road';
+        this.player.move(vx, vy);
+      } else if (this.board[posX + vx][posY + vy].type === 'monster') {
+        console.log('Monster');
+      } else {
+        console.log('Obstacle');
+      }
     } else {
-      console.log('Obstacle');
+      console.log('Board limit');
     }
   }
 }
