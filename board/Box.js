@@ -13,7 +13,7 @@ class Box {
     ctx.fillStyle = getBoxColor(this.type);
     ctx.fillRect(coefX * this.width, coefY * this.height, this.width, this.height);
     ctx.strokeRect(coefX * this.width, coefY * this.height, this.width, this.height);
-    /road|player|wall/g.test(this.type) && drawImg(ctx, coefX, coefY, this.type);
+    /player|wall/g.test(this.type) && drawImg(ctx, coefX, coefY, this.type);
   }
 }
 

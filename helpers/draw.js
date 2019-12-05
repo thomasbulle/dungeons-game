@@ -1,13 +1,13 @@
 export const getBoxColor = type => {
   switch (type) {
     default:
-      return '#ffffff';
+      return 'transparent';
   }
 };
 
 export const drawImg = (ctx, i, j, imgName) => {
   // To draw a road behind the player and the walls
-  if(imgName !== 'road') drawImg(ctx, i, j, 'road');
+  //if(imgName !== 'road') drawImg(ctx, i, j, 'road');
 
   const img = document.createElement('img');
   img.src = `../ressources/images/${imgName}.png`;
