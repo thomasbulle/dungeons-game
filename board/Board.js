@@ -1,4 +1,5 @@
 import Box from './Box.js';
+import Player from '../entities/Player.js';
 import Monster from '../entities/Monster.js';
 import config from '../config/config.js';
 import levels from './levels.js';
@@ -12,6 +13,7 @@ class Board {
     this.level = level;
     this.board = new Array(width);
     this.monsters = new Array(levels[this.level].monsters.length);
+    this.player = null;
 
     this.initBoard();
   }
@@ -38,6 +40,7 @@ class Board {
     const posPlayerX = levels[this.level].player.x;
     const posPlayerY = levels[this.level].player.y;
     this.board[posPlayerX][posPlayerY].type = 'player';
+    this.player = new Player(posPlayerX, posPlayerY);
   }
 
   draw(ctx) {
@@ -50,10 +53,41 @@ class Board {
     this.monsters.map(monster => monster.draw(ctx));
   }
 
-  movePlayer(x, y, vx, vy, ctx) {
-    this.board[x][y].type = 'player';
-    this.board[x - vx][y - vy].type = 'road';
-    this.board[x - vx][y - vy].draw(ctx, x, y);
+  controls(ctx) {
+    document.addEventListener('keydown', event => {
+      if (event.isComposing || event.keyCode === 37) {
+        console.log('37')
+        this.movePlayer(-1, 0, ctx);
+        return;
+      }
+      if (event.isComposing || event.keyCode === 38) {
+        console.log('38')
+        this.movePlayer(0, -1, ctx);
+        return;
+      }
+      if (event.isComposing || event.keyCode === 39) {
+        console.log('39')
+        this.movePlayer(1, 0, ctx);
+        return;
+      }
+      if (event.isComposing || event.keyCode === 40) {
+        console.log('40')
+        this.movePlayer(0, 1, ctx);
+        return;
+      }
+    });
+  }
+
+  movePlayer(vx, vy, ctx) {
+    const { posX, posY } = this.player;
+
+    if (this.board[posX + vx] && this.board[posX + vx][posY + vy] && this.board[posX + vx][posY + vy].type === 'road') {
+      this.board[posX + vx][posY + vy].type = 'player';
+      this.board[posX][posY].type = 'road';
+      this.player.move(vx, vy);
+    } else {
+      console.log('Obstacle');
+    }
   }
 }
 
