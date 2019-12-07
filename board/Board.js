@@ -46,9 +46,27 @@ class Board {
     const posPlayerY = levels[this.level].player.y;
     this.board[posPlayerX][posPlayerY].type = 'player';
     this.player = new Player(posPlayerX, posPlayerY);
+
+    // init the player's life
+    this.player.life = levels[this.level].player.life;
+  }
+
+  drawHearts() {
+    // draw the life counter
+    const lifeWrapper = document.getElementById('lifeWrapper');
+    let hearts = new Array(this.player.life);
+    for(let i=0; i< this.player.life; i++) {
+      const el = document.createElement('img');
+      el.src = '../ressources/images/heart.png';
+      el.alt = 'Heart';
+      el.className = 'heart';
+      lifeWrapper.appendChild(el);
+      hearts.push(el);
+    }
   }
 
   draw(ctx) {
+    // draw the board
     this.board.map((column, indexColumn) => {
       column.map((box, indexBox) => {
         box.draw(ctx, indexColumn, indexBox);

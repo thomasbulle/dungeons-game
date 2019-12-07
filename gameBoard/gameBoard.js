@@ -14,6 +14,7 @@ const init = () => {
   canvas.height = 450;
   requestAnimationFrame(drawBoard);
   board.controls(ctx);
+  board.drawHearts();
 };
 
 const drawBoard = () => {

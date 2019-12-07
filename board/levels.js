@@ -2,7 +2,8 @@ export default [
   {
     player: {
       x: 0,
-      y: 7
+      y: 7,
+      life: 3
     },
     walls: [
       {
