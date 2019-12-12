@@ -149,6 +149,10 @@ class Board {
         audio.play();
         document.getElementsByClassName('heart')[this.player.life-1].src = '../ressources/images/heart-dead.png';
         this.player.life -= 1;
+        // Game Over
+        if (this.player.life === 0) {
+          document.getElementById('modal').style.display = 'block';
+        }
       } else if (this.board[posX + vx][posY + vy].type === 'exit') {
         console.log('Exit');
       } else if (this.board[posX + vx][posY + vy].type === 'wall') {

@@ -24,6 +24,19 @@
       <canvas id='gameBoard' width='450' height='450'></canvas>
     </div>
 
-    <script type='module' src="gameBoard.js"></script>
+    <div id='modal'>
+      <div class='shadow-modal'></div>
+      <div class='modal-wrapper'>
+          <div class='content-modal'>
+            <span>GAME OVER</span>
+          </div>
+    
+          <div class='footer-modal' onclick="window.location.href='/'">
+              <span class='ok-button-modal'>MENU</span>
+          </div>
+        </div>
+    </div>
+
+    <script type='module' src='gameBoard.js'></script>
   </body>
 </html>
