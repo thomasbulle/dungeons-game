@@ -145,7 +145,10 @@ class Board {
         this.board[posX][posY].type = 'road';
         this.player.move(vx, vy);
       } else if (this.board[posX + vx][posY + vy].type === 'monster') {
-        console.log('Monster');
+        const audio = new Audio('../ressources/sounds/hit.mp3');
+        audio.play();
+        document.getElementsByClassName('heart')[this.player.life-1].src = '../ressources/images/heart-dead.png';
+        this.player.life -= 1;
       } else if (this.board[posX + vx][posY + vy].type === 'exit') {
         console.log('Exit');
       } else if (this.board[posX + vx][posY + vy].type === 'wall') {
