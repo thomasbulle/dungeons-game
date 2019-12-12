@@ -30,6 +30,9 @@ class Board {
     // place the walls
     levels[this.level].walls.map(wall => this.board[wall.x][wall.y].type = 'wall');
 
+    // place the coins
+    levels[this.level].coins.map(coin => this.board[coin.x][coin.y].type = 'coin');
+
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
       this.board[monster.x][monster.y].type = 'monster';
@@ -55,13 +58,27 @@ class Board {
     // draw the life counter
     const lifeWrapper = document.getElementById('lifeWrapper');
     let hearts = new Array(this.player.life);
-    for(let i=0; i< this.player.life; i++) {
+    for(let i=0; i < this.player.life; i++) {
       const el = document.createElement('img');
       el.src = '../ressources/images/heart.png';
       el.alt = 'Heart';
       el.className = 'heart';
       lifeWrapper.appendChild(el);
       hearts.push(el);
+    }
+  }
+
+  drawCoins() {
+    // draw the coin counter
+    const coinCounterWrapper = document.getElementById('coinCounterWrapper');
+    let coins = new Array(levels[this.level].coins.length);
+    for(let i=0; i < levels[this.level].coins.length; i++) {
+      const el = document.createElement('img');
+      el.src = '../ressources/images/big-coin-empty.png';
+      el.alt = 'Coin';
+      el.className = 'coin';
+      coinCounterWrapper.appendChild(el);
+      coins.push(el);
     }
   }
 
@@ -117,7 +134,13 @@ class Board {
     const { posX, posY } = this.player;
 
     if (this.board[posX + vx] && this.board[posX + vx][posY + vy]) {
-      if (this.board[posX + vx][posY + vy].type === 'road') {
+      if (/^road|coin$/g.test(this.board[posX + vx][posY + vy].type)) {
+        if (this.board[posX + vx][posY + vy].type === 'coin') {
+          const audio = new Audio('../ressources/sounds/get-coin.mp3');
+          audio.play();
+          this.player.coins += 1;
+          document.getElementsByClassName('coin')[this.player.coins-1].src = '../ressources/images/big-coin.png';
+        }
         this.board[posX + vx][posY + vy].type = 'player';
         this.board[posX][posY].type = 'road';
         this.player.move(vx, vy);
@@ -125,7 +148,7 @@ class Board {
         console.log('Monster');
       } else if (this.board[posX + vx][posY + vy].type === 'exit') {
         console.log('Exit');
-      } else {
+      } else if (this.board[posX + vx][posY + vy].type === 'wall') {
         console.log('Obstacle');
       }
     } else {

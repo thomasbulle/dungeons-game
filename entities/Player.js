@@ -1,8 +1,9 @@
 class Player {
-  constructor(posX, posY, life) {
+  constructor(posX, posY, life, coins = 0) {
     this.posX = posX;
     this.posY = posY;
     this.life = life;
+    this.coins = coins;
   }
 
   move(x, y) {

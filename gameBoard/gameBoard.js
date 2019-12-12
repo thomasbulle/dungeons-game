@@ -15,6 +15,7 @@ const init = () => {
   requestAnimationFrame(drawBoard);
   board.controls(ctx);
   board.drawHearts();
+  board.drawCoins();
 };
 
 const drawBoard = () => {
