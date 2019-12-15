@@ -8,17 +8,21 @@ class Board {
   constructor(width, height, level) {
     this.width = width;
     this.height = height;
-    this.posPlayerX = levels[level].player.x;
-    this.posPlayerY = levels[level].player.y;
+    this.posPlayerX = 0;
+    this.posPlayerY = 0;
     this.level = level;
     this.board = new Array(width);
-    this.monsters = new Array(levels[this.level].monsters.length);
+    this.monsters = null;
     this.player = null;
 
     this.initBoard();
   }
 
   initBoard() {
+    this.posPlayerX = levels[this.level].player.x;
+    this.posPlayerY = levels[this.level].player.y;
+    this.monsters = new Array(levels[this.level].monsters.length);
+
     for (let i = 0; i < this.width; i++) {
       const column = [];
       for (let j = 0; j < this.height; j++) {
@@ -69,8 +73,12 @@ class Board {
   }
 
   drawCoins() {
-    // draw the coin counter
     const coinCounterWrapper = document.getElementById('coinCounterWrapper');
+
+    // remove the prev coins
+    coinCounterWrapper.innerHTML = '';
+
+    // draw the coin counter
     let coins = new Array(levels[this.level].coins.length);
     for(let i=0; i < levels[this.level].coins.length; i++) {
       const el = document.createElement('img');
@@ -94,17 +102,19 @@ class Board {
       monster.draw(ctx);
 
       // Set the monster zone
-      if (this.board[monster.posX + 1] && this.board[monster.posX + 1][monster.posY].type !== 'wall') {
-        this.board[monster.posX + 1][monster.posY].type = 'monster'; 
-      }
-      if (this.board[monster.posX - 1] && this.board[monster.posX - 1][monster.posY].type !== 'wall') {
-        this.board[monster.posX - 1][monster.posY].type = 'monster';
-      }
-      if (this.board[monster.posX][monster.posY + 1] && this.board[monster.posX][monster.posY + 1].type !== 'wall') {
-        this.board[monster.posX][monster.posY + 1].type = 'monster';
-      }
-      if (this.board[monster.posX][monster.posY - 1] && this.board[monster.posX][monster.posY - 1].type !== 'wall') {
-        this.board[monster.posX][monster.posY - 1].type = 'monster';
+      if (monster.hasMonsterArea) {
+        if (this.board[monster.posX + 1] && this.board[monster.posX + 1][monster.posY].type !== 'wall') {
+          this.board[monster.posX + 1][monster.posY].type = 'monster'; 
+        }
+        if (this.board[monster.posX - 1] && this.board[monster.posX - 1][monster.posY].type !== 'wall') {
+          this.board[monster.posX - 1][monster.posY].type = 'monster';
+        }
+        if (this.board[monster.posX][monster.posY + 1] && this.board[monster.posX][monster.posY + 1].type !== 'wall') {
+          this.board[monster.posX][monster.posY + 1].type = 'monster';
+        }
+        if (this.board[monster.posX][monster.posY - 1] && this.board[monster.posX][monster.posY - 1].type !== 'wall') {
+          this.board[monster.posX][monster.posY - 1].type = 'monster';
+        }
       }
     });
   }
@@ -154,13 +164,25 @@ class Board {
           document.getElementById('modal').style.display = 'block';
         }
       } else if (this.board[posX + vx][posY + vy].type === 'exit') {
-        console.log('Exit');
+        if (this.player.coins === levels[this.level].coins.length) {
+          console.log('Exit');
+          this.nextLevel(ctx);
+        } else {
+          console.log('Missing coins !');
+        }
       } else if (this.board[posX + vx][posY + vy].type === 'wall') {
         console.log('Obstacle');
       }
     } else {
       console.log('Board limit');
     }
+  }
+
+  nextLevel(ctx) {
+    this.level++;
+    this.initBoard();
+    this.draw(ctx);
+    this.drawCoins();
   }
 }
 

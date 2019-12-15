@@ -10,6 +10,6 @@ export const drawImg = (ctx, i, j, imgName) => {
   //if(imgName !== 'road') drawImg(ctx, i, j, 'road');
 
   const img = document.createElement('img');
-  img.src = `../ressources/images/${imgName}.png`;
-  ctx.drawImage(img, 0, 0, 30, 30, i * 30, j * 30, 30, 30);
+  img.src = `../ressources/images/${imgName === 'coin' ? 'coin.gif' : imgName + '.png'}`;
+  ctx.drawImage(img, 0, 0, 30, 30, i * 30 + 1, j * 30 + 1, 30, 30);
 };

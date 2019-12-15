@@ -13,6 +13,7 @@ const init = () => {
   canvas.width = 450;
   canvas.height = 450;
   requestAnimationFrame(drawBoard);
+  document.getElementById('skipLevel').onclick = () => board.nextLevel(ctx);
   board.controls(ctx);
   board.drawHearts();
   board.drawCoins();
