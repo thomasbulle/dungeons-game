@@ -15,11 +15,20 @@
   padding: 0px 20px 4px;
 }
 
+#levelInfo {
+  position: absolute;
+  z-index: 1;
+  top: 15px;
+  right: 5px;
+  font-family: Pixeled, Arial, sans-serif;
+}
+
 #lifeWrapper {
   position: absolute;
   top: 140px;
-  left: 20px;
+  width: 100%;
   margin-left: -20px;
+  text-align: center;
 }
 
 .heart, .coin {
@@ -30,9 +39,10 @@
 
 #coinCounterWrapper {
   position: absolute;
-  top: 140px;
-  right: 20px;
+  top: 210px;
   margin-left: -20px;
+  width: 100%;
+  text-align: center;
 }
 
 .game-board {
@@ -45,7 +55,7 @@
   background-size: 450px;
   display: block;
   position: absolute;
-  top: 60%;
+  top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: url('../ressources/images/road.png');

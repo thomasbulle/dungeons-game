@@ -3,9 +3,10 @@ import { getRandomMonster } from '../helpers/entities.js';
 import { drawImg } from '../helpers/draw.js';
 
 class Monster {
-  constructor(posX, posY) {
+  constructor(posX, posY, hasMonsterArea) {
     this.posX = posX;
     this.posY = posY;
+    this.hasMonsterArea = hasMonsterArea;
     this.monsterType = getRandomMonster(config.monster.numberOfTypes);
   }
 

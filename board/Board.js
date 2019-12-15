@@ -40,7 +40,7 @@ class Board {
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
       this.board[monster.x][monster.y].type = 'monster';
-      this.monsters[index] = new Monster(monster.x, monster.y);
+      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea);
     });
 
     // place the exit
@@ -58,21 +58,21 @@ class Board {
     this.player.life = levels[this.level].player.life;
   }
 
-  drawHearts() {
-    // draw the life counter
-    const lifeWrapper = document.getElementById('lifeWrapper');
-    let hearts = new Array(this.player.life);
-    for(let i=0; i < this.player.life; i++) {
-      const el = document.createElement('img');
-      el.src = '../ressources/images/heart.png';
-      el.alt = 'Heart';
-      el.className = 'heart';
-      lifeWrapper.appendChild(el);
-      hearts.push(el);
+  drawStats() {
+    if (this.level === 0) {
+      // draw the life counter
+      const lifeWrapper = document.getElementById('lifeWrapper');
+      let hearts = new Array(this.player.life);
+      for(let i=0; i < this.player.life; i++) {
+        const el = document.createElement('img');
+        el.src = '../ressources/images/heart.png';
+        el.alt = 'Heart';
+        el.className = 'heart';
+        lifeWrapper.appendChild(el);
+        hearts.push(el);
+      }
     }
-  }
 
-  drawCoins() {
     const coinCounterWrapper = document.getElementById('coinCounterWrapper');
 
     // remove the prev coins
@@ -88,6 +88,12 @@ class Board {
       coinCounterWrapper.appendChild(el);
       coins.push(el);
     }
+
+    // display level number
+    const levelInfo = document.getElementById('levelInfo');
+    levelInfo.textContent = /\d/g.test(levelInfo.textContent)
+      ? levelInfo.textContent.replace(/\d/g, (this.level + 1).toString())
+      : `${levelInfo.textContent}${(this.level + 1).toString()}`;
   }
 
   draw(ctx) {
@@ -182,7 +188,7 @@ class Board {
     this.level++;
     this.initBoard();
     this.draw(ctx);
-    this.drawCoins();
+    this.drawStats();
   }
 }
 

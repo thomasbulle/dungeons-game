@@ -15,8 +15,7 @@ const init = () => {
   requestAnimationFrame(drawBoard);
   document.getElementById('skipLevel').onclick = () => board.nextLevel(ctx);
   board.controls(ctx);
-  board.drawHearts();
-  board.drawCoins();
+  board.drawStats();
 };
 
 const drawBoard = () => {
