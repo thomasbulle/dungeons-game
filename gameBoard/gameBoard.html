@@ -29,15 +29,55 @@
       <canvas id='gameBoard' width='450' height='450'></canvas>
     </div>
 
-    <div id='modal'>
+    <div class='phone-controller'>
+      <div class='direction-wrapper'>
+        <img
+          id='upButton'
+          class='btn-direction-controller up'
+          src='../ressources/images/arrow-controller.png' /><!-- /\ -->
+        <div class='buttons-x-axis-wrapper'>
+          <img
+            id='leftButton'
+            class='btn-direction-controller left'
+            src='../ressources/images/arrow-controller.png' /><!-- < -->
+          <img
+            id='rightButton'
+            class='btn-direction-controller right'
+            src='../ressources/images/arrow-controller.png' /><!-- > -->
+        </div>
+        <img
+          id='downButton'
+          class='btn-direction-controller down'
+          src='../ressources/images/arrow-controller.png' /><!-- v -->
+      </div>
+    </div>
+
+    <div id='modalGameOver' class='modal'>
       <div class='shadow-modal'></div>
-      <div class='modal-wrapper'>
-          <div class='content-modal'>
+      <div class='modal-wrapper game-over-modal'>
+          <div class='content-modal content-game-over-modal'>
             <span>GAME OVER</span>
           </div>
     
-          <div class='footer-modal' onclick="window.location.href='/'">
-              <span class='ok-button-modal'>MENU</span>
+          <div class='footer-modal'>
+              <span class='btn-modal replay-btn-modal' onclick="window.location.reload()">REJOUER</span>
+              <span class='btn-modal ok-btn-modal' onclick="window.location.href='/'">MENU</span>
+          </div>
+        </div>
+    </div>
+
+    <div id='modalEndGame' class='modal'>
+      <div class='shadow-modal'></div>
+      <div class='modal-wrapper end-game-modal'>
+          <div class='content-modal content-end-game-modal'>
+            <img src='../ressources/images/win.png' alt='Win' class='banner-win' />
+            <br />
+            <span>Tu as trouvé la sortie</span>
+          </div>
+    
+          <div class='footer-modal'>
+              <span class='btn-modal replay-btn-modal' onclick="window.location.reload()">REJOUER</span>
+              <span class='btn-modal ok-btn-modal' onclick="window.location.href='/'">MENU</span>
           </div>
         </div>
     </div>

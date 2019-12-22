@@ -9,10 +9,18 @@
 
 .home-btn-game-board {
   position: absolute;
+  z-index: 1;
   top: 5px;
   left: 5px;
   font-size: 14px;
   padding: 0px 20px 4px;
+}
+
+#skipLevel {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  z-index: 1;
 }
 
 #levelInfo {
@@ -61,18 +69,70 @@
   background: url('../ressources/images/road.png');
 }
 
-#skipLevel {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  z-index: 1;
+
+/* ------------------------ *
+ * --- PHONE CONTROLLER --- *
+ * ------------------------ */
+.phone-controller {
+  display: none;
+  width: 100vw;
+  margin-top: 20px;
+  text-align: center;
+  background-color: #757575;
+  padding: 10px 0;
+  border-top: 4px solid black;
+  border-left: 4px solid black;
+  border-right: 4px solid black;
 }
+
+.direction-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons-x-axis-wrapper {
+  display: inline-block;
+  margin-left: -30px;
+}
+
+.btn-direction-controller {
+  width: 40px;
+  padding: 0 5px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+.btn-direction-controller.up {
+  margin-bottom: 3px;
+  transform: rotate(180deg);
+}
+
+.btn-direction-controller.left {
+  margin-left: 30px;
+  transform: rotate(90deg);
+}
+
+.btn-direction-controller.right {
+  margin-left: 30px;
+  transform: rotate(270deg);
+}
+
+@media (max-width: 650px) {
+  .phone-controller {
+    display: block;
+  }
+}
+/* ---------------------------- *
+ * --- END PHONE CONTROLLER --- *
+ * ---------------------------- */
 
 
 /* ----------------------- *
  * --- GAME OVER MODAL --- *
  * ----------------------- */
-#modal {
+.modal {
   display: none;
 }
 
@@ -92,13 +152,21 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 200px;
   text-align: center;
   font-family: calibri;
   background-color: white;
   border: 4px solid black;
   border-radius: 15px;
+}
+
+.modal-wrapper.game-over-modal {
+  width: 400px;
+  height: 200px;
+}
+
+.modal-wrapper.end-game-modal {
+  width: 600px;
+  height: 300px;
 }
 
 .content-modal {
@@ -108,15 +176,32 @@
   transform: translate(-50%, -50%);
   width: 100%;
   font-family: "Pixeled";
+}
+
+.content-game-over-modal {
   font-size: 30px;
 }
 
+.content-end-game-modal {
+  font-size: 28px;
+}
+
+.banner-win {
+  width: 90%;
+  max-width: 540px;
+}
+
 .footer-modal {
-  user-select: none;
   position: absolute;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  margin-left: -20px;
+}
+
+.btn-modal {
+  user-select: none;
+  margin-left: 20px;
   padding: 0 10px;
   background-color: #cacaca;
   border: 2px solid #000;
@@ -126,12 +211,12 @@
   font-weight: bold;
 }
 
-.footer-modal:hover {
+.btn-modal:hover {
   cursor: pointer;
   box-shadow: 2px 2px 0px #000;
 }
 
-.footer-modal:active {
+.btn-modal:active {
   box-shadow: 1px 1px 0px #000;
 }
 

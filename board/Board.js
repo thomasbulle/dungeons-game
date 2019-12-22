@@ -125,25 +125,23 @@ class Board {
     });
   }
 
-  controls(ctx) {
-    document.addEventListener('keydown', event => {
-      if (event.isComposing || event.keyCode === 37) {
-        this.movePlayer(-1, 0, ctx);
-        return;
-      }
-      if (event.isComposing || event.keyCode === 38) {
-        this.movePlayer(0, -1, ctx);
-        return;
-      }
-      if (event.isComposing || event.keyCode === 39) {
-        this.movePlayer(1, 0, ctx);
-        return;
-      }
-      if (event.isComposing || event.keyCode === 40) {
-        this.movePlayer(0, 1, ctx);
-        return;
-      }
-    });
+  controls(ctx, movement) {
+    if (movement === 'ArrowLeft') {
+      this.movePlayer(-1, 0, ctx);
+      return;
+    }
+    if (movement === 'ArrowUp') {
+      this.movePlayer(0, -1, ctx);
+      return;
+    }
+    if (movement === 'ArrowRight') {
+      this.movePlayer(1, 0, ctx);
+      return;
+    }
+    if (movement === 'ArrowDown') {
+      this.movePlayer(0, 1, ctx);
+      return;
+    }
   }
 
   movePlayer(vx, vy, ctx) {
@@ -167,12 +165,17 @@ class Board {
         this.player.life -= 1;
         // Game Over
         if (this.player.life === 0) {
-          document.getElementById('modal').style.display = 'block';
+          document.getElementById('modalGameOver').style.display = 'block';
         }
       } else if (this.board[posX + vx][posY + vy].type === 'exit') {
         if (this.player.coins === levels[this.level].coins.length) {
-          console.log('Exit');
-          this.nextLevel(ctx);
+          if (this.level + 1 === levels.length) {
+            // End game
+            document.getElementById('modalEndGame').style.display = 'block';
+          } else {
+            // Next level
+            this.nextLevel(ctx);
+          }
         } else {
           console.log('Missing coins !');
         }
