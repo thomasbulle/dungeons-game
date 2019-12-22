@@ -14,8 +14,8 @@ const init = () => {
   canvas.height = 450;
   requestAnimationFrame(drawBoard);
   
-  //document.getElementById('skipLevel').onclick = () => board.nextLevel(ctx);
-  document.getElementById('skipLevel').onclick = () => document.getElementById('modalEndGame').style.display = 'block';
+  document.getElementById('skipLevel').onclick = () => board.nextLevel(ctx);
+  //document.getElementById('skipLevel').onclick = () => document.getElementById('modalEndGame').style.display = 'block';
 
   document.addEventListener('keydown', event => {
     /^Arrow(Up|Down|Left|Right)$/g.test(event.key) && event.preventDefault();

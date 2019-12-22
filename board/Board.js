@@ -51,8 +51,9 @@ class Board {
     // init player
     const posPlayerX = levels[this.level].player.x;
     const posPlayerY = levels[this.level].player.y;
-    this.board[posPlayerX][posPlayerY].type = 'player';
-    this.player = new Player(posPlayerX, posPlayerY);
+    const xDirection = levels[this.level].player.xDirection;
+    this.board[posPlayerX][posPlayerY].type = `player-${xDirection}`;
+    this.player = new Player(posPlayerX, posPlayerY, xDirection);
 
     // init the player's life
     this.player.life = levels[this.level].player.life;
@@ -155,9 +156,9 @@ class Board {
           this.player.coins += 1;
           document.getElementsByClassName('coin')[this.player.coins-1].src = '../ressources/images/big-coin.png';
         }
-        this.board[posX + vx][posY + vy].type = 'player';
         this.board[posX][posY].type = 'road';
         this.player.move(vx, vy);
+        this.board[posX + vx][posY + vy].type = `player-${this.player.xDirection}`;
       } else if (this.board[posX + vx][posY + vy].type === 'monster') {
         const audio = new Audio('../ressources/sounds/hit.mp3');
         audio.play();

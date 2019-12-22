@@ -3,7 +3,8 @@ export default [
     player: {
       x: 0,
       y: 7,
-      life: 3
+      life: 3,
+      xDirection: 'right'
     },
     walls: [
       {
@@ -180,7 +181,8 @@ export default [
     player: {
       x: 0,
       y: 0,
-      life: 3
+      life: 3,
+      xDirection: 'right'
     },
     walls: [
       {
