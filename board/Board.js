@@ -40,7 +40,7 @@ class Board {
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
       this.board[monster.x][monster.y].type = 'monster';
-      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea);
+      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, 1);
     });
 
     // place the exit
@@ -186,6 +186,35 @@ class Board {
     } else {
       console.log('Board limit');
     }
+  }
+
+  moveMonster(ctx) {
+    this.monsters.map(monster => {
+      if (monster.movable) {
+        if (this.board[monster.posX + monster.v] && this.board[monster.posX + monster.v][monster.posY]) {
+          if (/^road|coin$/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
+            monster.move();
+          } else if (/player/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
+            monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+            monster.move();
+            const audio = new Audio('../ressources/sounds/hit.mp3');
+            audio.play();
+            this.player.life -= 1;
+            document.getElementsByClassName('heart')[this.player.life].src = '../ressources/images/heart-dead.png';
+            // Game Over
+            if (this.player.life === 0) {
+              document.getElementById('modalGameOver').style.display = 'block';
+            }
+          } else if (/monster|wall/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
+            monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+            monster.move();
+          }
+        } else {
+          monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+          monster.move();
+        }
+      }
+    });
   }
 
   nextLevel(ctx) {

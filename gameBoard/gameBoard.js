@@ -5,6 +5,7 @@ let canvas = null;
 let ctx = null;
 let level = 0;
 let board = null;
+let moveMonsterInterval = null;
 
 const init = () => {
   board = new Board(config.board.width, config.board.height, level);
@@ -21,6 +22,7 @@ const init = () => {
     /^Arrow(Up|Down|Left|Right)$/g.test(event.key) && event.preventDefault();
     board.controls(ctx, event.key);
   });
+  moveMonsterInterval = setInterval(() => board.moveMonster(ctx), 1000);
   board.drawStats();
 
   // set phone controller

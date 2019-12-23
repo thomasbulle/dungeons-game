@@ -529,7 +529,8 @@ export default [
       {
         x: 7,
         y: 9,
-        hasMonsterArea: false
+        hasMonsterArea: false,
+        movable: 'x'
       },
       {
         x: 14,
