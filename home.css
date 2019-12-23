@@ -1,3 +1,7 @@
+body {
+  overflow-y: hidden;
+}
+
 .title-home {
   position: absolute;
   top: 9%;
@@ -7,10 +11,69 @@
   font-family: Pixeled, Arial, sans-serif;
 }
 
+.monster-background {
+  position: absolute;
+  z-index: 1;
+}
+
+.monster-background.monster1 {
+  left: 20%;
+  width: 70px;
+  height: 70px;
+  animation: fallingMonster1 infinite 3s ease-in-out;
+}
+
+.monster-background.monster2 {
+  right: 20%;
+  width: 70px;
+  height: 70px;
+  animation: fallingMonster2 infinite 3s ease-in-out;
+}
+
+.monster-background.monster3 {
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  animation: fallingMonster3 infinite 4s ease-in-out;
+}
+
+.monster-background.monster4 {
+  width: 50px;
+  height: 50px;
+  animation: fallingMonster4 infinite 2s ease-in-out;
+}
+
+.monster-background.monster5 {
+  right: 10px;
+  width: 50px;
+  height: 50px;
+  animation: fallingMonster4 infinite 2s ease-in-out;
+}
+
+.big-coin-home {
+  position: absolute;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  top: 15%;
+  transform: translateX(-15%);
+  animation: spinner linear infinite 2s;
+  transform-style: preserve-3d;
+}
+
+.big-coin-home-left {
+  left: 15%;
+}
+
+.big-coin-home-right {
+  right: 15%;
+}
+
 
 /* --- BUTTONS --- */
 .play-btn-home {
   position: absolute;
+  z-index: 2;
   top: 40%;
   left: 50%;
   transform: translateX(-50%);
@@ -18,9 +81,111 @@
 
 .wrapper-btn {
   position: absolute;
+  z-index: 2;
   top: 70%;
   display: flex;
   justify-content: space-around;
   width: 100%;
 }
 /* --- END BUTTONS --- */
+
+@keyframes fallingMonster1 {
+  0% {
+    top: -100px;
+    transform: rotate(50deg);
+  }
+  25% {
+    left: calc(20% + 50px);
+    transform: rotate(-50deg);
+  }
+  50% {
+    left: calc(20% - 50px);
+    transform: rotate(50deg);
+  }
+  75% {
+    left: calc(20% + 50px);
+    transform: rotate(-50deg);
+  }
+  100% {
+    left: calc(20% - 50px);
+    top: 100%;
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes fallingMonster2 {
+  0% {
+    top: -100px;
+    transform: rotate(50deg);
+  }
+  25% {
+    right: calc(20% + 50px);
+    transform: rotate(-50deg);
+  }
+  50% {
+    right: calc(20% - 50px);
+    transform: rotate(50deg);
+  }
+  75% {
+    right: calc(20% + 50px);
+    transform: rotate(-50deg);
+  }
+  100% {
+    right: calc(20% - 50px);
+    top: 100%;
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes fallingMonster3 {
+  0% {
+    top: -100px;
+    transform: rotate(50deg);
+  }
+  25% {
+    left: calc(50% + 50px);
+    transform: rotate(-50deg);
+  }
+  50% {
+    left: calc(50% - 50px);
+    transform: rotate(360deg);
+  }
+  75% {
+    left: calc(50% + 50px);
+    transform: rotate(-50deg);
+  }
+  100% {
+    left: calc(50% - 50px);
+    top: 100%;
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes fallingMonster4 {
+  0% {
+    top: -100px;
+    transform: rotate(50deg);
+  }
+  25% {
+    transform: rotate(-50deg);
+  }
+  50% {
+    transform: rotate(360deg);
+  }
+  75% {
+    transform: rotate(-50deg);
+  }
+  100% {
+    top: 100%;
+    transform: rotate(50deg);
+  }
+}
+
+@keyframes spinner {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(-360deg);
+  }
+}
