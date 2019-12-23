@@ -16,7 +16,7 @@ class Monster {
   }
 
   draw(ctx) {
-    drawImg(ctx, this.posX, this.posY, this.monsterType);
+    drawImg(ctx, this.posY, this.posX, this.monsterType);
   }
 
   move() {

@@ -32,29 +32,30 @@ class Board {
     }
 
     // place the walls
-    levels[this.level].walls.map(wall => this.board[wall.x][wall.y].type = 'wall');
+    levels[this.level].walls.map(wall => this.board[wall.y][wall.x].type = 'wall');
 
     // place the coins
-    levels[this.level].coins.map(coin => this.board[coin.x][coin.y].type = 'coin');
+    levels[this.level].coins.map(coin => this.board[coin.y][coin.x].type = 'coin');
 
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
-      this.board[monster.x][monster.y].type = 'monster';
-      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, 0, 0);
+      this.board[monster.y][monster.x].type = 'monster';
+      let vMonster = /^wall|monster$/g.test(this.board[monster.y + 1][monster.x + 1].type) ? -1 : 1;
+      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, monster.movable === 'x' ? vMonster : 0, monster.movable === 'y' ? vMonster : 0);
     });
 
     // place the exit
     const exitX = levels[this.level].exit.x;
     const exitY = levels[this.level].exit.y;
-    this.board[exitX][exitY].type = 'exit';
+    this.board[exitY][exitX].type = 'exit';
 
     // init player
     const posPlayerX = levels[this.level].player.x;
     const posPlayerY = levels[this.level].player.y;
-    const xDirection = levels[this.level].player.xDirection;
-    this.board[posPlayerX][posPlayerY].type = `player-${xDirection}`;
+    const direction = levels[this.level].player.direction;
+    this.board[posPlayerY][posPlayerX].type = `player-${direction}`;
     const lifePlayer = levels[this.level].player.life;
-    this.player = new Player(posPlayerX, posPlayerY, lifePlayer, xDirection);
+    this.player = new Player(posPlayerX, posPlayerY, lifePlayer, direction);
   }
 
   drawStats() {
@@ -108,17 +109,17 @@ class Board {
 
       // Set the monster zone
       if (monster.hasMonsterArea) {
-        if (this.board[monster.posX + 1] && this.board[monster.posX + 1][monster.posY].type !== 'wall') {
-          this.board[monster.posX + 1][monster.posY].type = 'monster'; 
+        if (this.board[monster.posY + 1] && this.board[monster.posY + 1][monster.posX].type !== 'wall') {
+          this.board[monster.posY + 1][monster.posX].type = 'monster'; 
         }
-        if (this.board[monster.posX - 1] && this.board[monster.posX - 1][monster.posY].type !== 'wall') {
-          this.board[monster.posX - 1][monster.posY].type = 'monster';
+        if (this.board[monster.posY - 1] && this.board[monster.posY - 1][monster.posX].type !== 'wall') {
+          this.board[monster.posY - 1][monster.posX].type = 'monster';
         }
-        if (this.board[monster.posX][monster.posY + 1] && this.board[monster.posX][monster.posY + 1].type !== 'wall') {
-          this.board[monster.posX][monster.posY + 1].type = 'monster';
+        if (this.board[monster.posY][monster.posX + 1] && this.board[monster.posY][monster.posX + 1].type !== 'wall') {
+          this.board[monster.posY][monster.posX + 1].type = 'monster';
         }
-        if (this.board[monster.posX][monster.posY - 1] && this.board[monster.posX][monster.posY - 1].type !== 'wall') {
-          this.board[monster.posX][monster.posY - 1].type = 'monster';
+        if (this.board[monster.posY][monster.posX - 1] && this.board[monster.posY][monster.posX - 1].type !== 'wall') {
+          this.board[monster.posY][monster.posX - 1].type = 'monster';
         }
       }
     });
@@ -126,19 +127,19 @@ class Board {
 
   controls(ctx, movement) {
     if (movement === 'ArrowLeft') {
-      this.movePlayer(-1, 0, ctx);
-      return;
-    }
-    if (movement === 'ArrowUp') {
       this.movePlayer(0, -1, ctx);
       return;
     }
+    if (movement === 'ArrowUp') {
+      this.movePlayer(-1, 0, ctx);
+      return;
+    }
     if (movement === 'ArrowRight') {
-      this.movePlayer(1, 0, ctx);
+      this.movePlayer(0, 1, ctx);
       return;
     }
     if (movement === 'ArrowDown') {
-      this.movePlayer(0, 1, ctx);
+      this.movePlayer(1, 0, ctx);
       return;
     }
   }
@@ -146,18 +147,18 @@ class Board {
   movePlayer(vx, vy, ctx) {
     const { posX, posY } = this.player;
 
-    if (this.board[posX + vx] && this.board[posX + vx][posY + vy]) {
-      if (/^road|coin$/g.test(this.board[posX + vx][posY + vy].type)) {
-        if (this.board[posX + vx][posY + vy].type === 'coin') {
+    if (this.board[posY + vy] && this.board[posY + vy][posX + vx]) {
+      if (/^road|coin$/g.test(this.board[posY + vy][posX + vx].type)) {
+        if (this.board[posY + vy][posX + vx].type === 'coin') {
           const audio = new Audio('../ressources/sounds/get-coin.mp3');
           audio.play();
           this.player.coins += 1;
           document.getElementsByClassName('coin')[this.player.coins-1].src = '../ressources/images/big-coin.png';
         }
-        this.board[posX][posY].type = 'road';
+        this.board[posY][posX].type = 'road';
         this.player.move(vx, vy);
-        this.board[posX + vx][posY + vy].type = `player-${this.player.xDirection}`;
-      } else if (this.board[posX + vx][posY + vy].type === 'monster') {
+        this.board[posY + vy][posX + vx].type = `player-${this.player.direction}`;
+      } else if (this.board[posY + vy][posX + vx].type === 'monster') {
         const audio = new Audio('../ressources/sounds/hit.mp3');
         audio.play();
         document.getElementsByClassName('heart')[this.player.life-1].src = '../ressources/images/heart-dead.png';
@@ -166,7 +167,7 @@ class Board {
         if (this.player.life === 0) {
           document.getElementById('modalGameOver').style.display = 'block';
         }
-      } else if (this.board[posX + vx][posY + vy].type === 'exit') {
+      } else if (this.board[posY + vy][posX + vx].type === 'exit') {
         if (this.player.coins === levels[this.level].coins.length) {
           if (this.level + 1 === levels.length) {
             // End game
@@ -178,7 +179,7 @@ class Board {
         } else {
           console.log('Missing coins !');
         }
-      } else if (this.board[posX + vx][posY + vy].type === 'wall') {
+      } else if (this.board[posY + vy][posX + vx].type === 'wall') {
         console.log('Obstacle');
       }
     } else {
@@ -189,10 +190,10 @@ class Board {
   moveMonster(ctx) {
     this.monsters.map(monster => {
       if (monster.movable) {
-        if (this.board[monster.posX + monster.vx] && this.board[monster.posX + monster.vx][monster.posY + monster.vy]) {
-          if (/^road|coin$/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
+        if (this.board[monster.posY + monster.vy] && this.board[monster.posY + monster.vy][monster.posX + monster.vx]) {
+          if (/^road|coin$/g.test(this.board[monster.posY + monster.vy][monster.posX + monster.vx].type)) {
             monster.move();
-          } else if (/player/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
+          } else if (/player/g.test(this.board[monster.posY + monster.vy][monster.posX + monster.vx].type)) {
             monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
             const audio = new Audio('../ressources/sounds/hit.mp3');
@@ -203,7 +204,7 @@ class Board {
             if (this.player.life === 0) {
               document.getElementById('modalGameOver').style.display = 'block';
             }
-          } else if (/monster|wall/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
+          } else if (/monster|wall/g.test(this.board[monster.posY + monster.vy][monster.posX + monster.vx].type)) {
             monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
           }
@@ -212,9 +213,9 @@ class Board {
           monster.move();
         }
         monster.prevBoxType = monster.currentBoxType;
-        monster.currentBoxType = this.board[monster.posX][monster.posY].type;
-        this.board[monster.posX - monster.vx][monster.posY - monster.vy].type = monster.prevBoxType || 'road';
-        this.board[monster.posX][monster.posY].type = 'monster';
+        monster.currentBoxType = this.board[monster.posY][monster.posX].type;
+        this.board[monster.posY - monster.vy][monster.posX - monster.vx].type = monster.prevBoxType || 'road';
+        this.board[monster.posY][monster.posX].type = 'monster';
       }
     });
   }
