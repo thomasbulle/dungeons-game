@@ -17,6 +17,17 @@ class Player {
       this.direction = 'left';
     }
   }
+
+  loseLife() {
+    const audio = new Audio('../ressources/sounds/hit.mp3');
+    audio.play();
+    this.life -= 1;
+    document.getElementsByClassName('heart')[this.life].src = '../ressources/images/heart-dead.png';
+    // Game Over
+    if (this.life === 0) {
+      document.getElementById('modalGameOver').style.display = 'block';
+    }
+  }
 }
 
 export default Player;

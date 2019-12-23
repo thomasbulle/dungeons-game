@@ -40,7 +40,7 @@ class Board {
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
       this.board[monster.y][monster.x].type = 'monster';
-      let vMonster = /^wall|monster$/g.test(this.board[monster.y + 1][monster.x + 1].type) ? -1 : 1;
+      let vMonster = (!this.board[monster.y + 1] || /^wall|monster$/g.test(this.board[monster.y + 1][monster.x + 1].type)) ? -1 : 1;
       this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, monster.movable === 'x' ? vMonster : 0, monster.movable === 'y' ? vMonster : 0);
     });
 
@@ -159,14 +159,7 @@ class Board {
         this.player.move(vx, vy);
         this.board[posY + vy][posX + vx].type = `player-${this.player.direction}`;
       } else if (this.board[posY + vy][posX + vx].type === 'monster') {
-        const audio = new Audio('../ressources/sounds/hit.mp3');
-        audio.play();
-        document.getElementsByClassName('heart')[this.player.life-1].src = '../ressources/images/heart-dead.png';
-        this.player.life -= 1;
-        // Game Over
-        if (this.player.life === 0) {
-          document.getElementById('modalGameOver').style.display = 'block';
-        }
+        this.player.loseLife();
       } else if (this.board[posY + vy][posX + vx].type === 'exit') {
         if (this.player.coins === levels[this.level].coins.length) {
           if (this.level + 1 === levels.length) {
@@ -196,14 +189,7 @@ class Board {
           } else if (/player/g.test(this.board[monster.posY + monster.vy][monster.posX + monster.vx].type)) {
             monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
-            const audio = new Audio('../ressources/sounds/hit.mp3');
-            audio.play();
-            this.player.life -= 1;
-            document.getElementsByClassName('heart')[this.player.life].src = '../ressources/images/heart-dead.png';
-            // Game Over
-            if (this.player.life === 0) {
-              document.getElementById('modalGameOver').style.display = 'block';
-            }
+            this.player.loseLife();
           } else if (/monster|wall/g.test(this.board[monster.posY + monster.vy][monster.posX + monster.vx].type)) {
             monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
