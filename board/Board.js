@@ -53,10 +53,8 @@ class Board {
     const posPlayerY = levels[this.level].player.y;
     const xDirection = levels[this.level].player.xDirection;
     this.board[posPlayerX][posPlayerY].type = `player-${xDirection}`;
-    this.player = new Player(posPlayerX, posPlayerY, xDirection);
-
-    // init the player's life
-    this.player.life = levels[this.level].player.life;
+    const lifePlayer = levels[this.level].player.life;
+    this.player = new Player(posPlayerX, posPlayerY, lifePlayer, xDirection);
   }
 
   drawStats() {
