@@ -186,6 +186,10 @@ export default [
     },
     walls: [
       {
+        y: 0,
+        x: 5
+      },
+      {
         y: 1,
         x: 0
       },
@@ -540,7 +544,8 @@ export default [
       {
         x: 4,
         y: 11,
-        hasMonsterArea: false
+        hasMonsterArea: false,
+        movable: 'y'
       },
       {
         x: 8,

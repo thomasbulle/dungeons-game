@@ -40,7 +40,7 @@ class Board {
     // place the monsters
     levels[this.level].monsters.map((monster, index) => {
       this.board[monster.x][monster.y].type = 'monster';
-      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, 1);
+      this.monsters[index] = new Monster(monster.x, monster.y, monster.hasMonsterArea, monster.movable, 0, 0);
     });
 
     // place the exit
@@ -189,11 +189,11 @@ class Board {
   moveMonster(ctx) {
     this.monsters.map(monster => {
       if (monster.movable) {
-        if (this.board[monster.posX + monster.v] && this.board[monster.posX + monster.v][monster.posY]) {
-          if (/^road|coin$/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
+        if (this.board[monster.posX + monster.vx] && this.board[monster.posX + monster.vx][monster.posY + monster.vy]) {
+          if (/^road|coin$/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
             monster.move();
-          } else if (/player/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
-            monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+          } else if (/player/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
+            monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
             const audio = new Audio('../ressources/sounds/hit.mp3');
             audio.play();
@@ -203,14 +203,18 @@ class Board {
             if (this.player.life === 0) {
               document.getElementById('modalGameOver').style.display = 'block';
             }
-          } else if (/monster|wall/g.test(this.board[monster.posX + monster.v][monster.posY].type)) {
-            monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+          } else if (/monster|wall/g.test(this.board[monster.posX + monster.vx][monster.posY + monster.vy].type)) {
+            monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
             monster.move();
           }
         } else {
-          monster.v = Math.sign(monster.v) > 0 ? -1 : 1;
+          monster[`v${monster.movable}`] = Math.sign(monster[`v${monster.movable}`]) > 0 ? -1 : 1;
           monster.move();
         }
+        monster.prevBoxType = monster.currentBoxType;
+        monster.currentBoxType = this.board[monster.posX][monster.posY].type;
+        this.board[monster.posX - monster.vx][monster.posY - monster.vy].type = monster.prevBoxType || 'road';
+        this.board[monster.posX][monster.posY].type = 'monster';
       }
     });
   }
