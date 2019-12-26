@@ -14,6 +14,8 @@ class Board {
     this.board = new Array(width);
     this.monsters = null;
     this.player = null;
+    this.audioGetCoin = new Audio('../ressources/sounds/get-coin.mp3');
+    this.coinNumber = 1;
 
     this.initBoard();
   }
@@ -100,7 +102,7 @@ class Board {
     // draw the board
     this.board.map((column, indexColumn) => {
       column.map((box, indexBox) => {
-        box.draw(ctx, indexColumn, indexBox);
+        box.draw(ctx, indexColumn, indexBox, this.coinNumber);
       });
     });
 
@@ -150,8 +152,7 @@ class Board {
     if (this.board[posY + vy] && this.board[posY + vy][posX + vx]) {
       if (/^road|coin$/g.test(this.board[posY + vy][posX + vx].type)) {
         if (this.board[posY + vy][posX + vx].type === 'coin') {
-          const audio = new Audio('../ressources/sounds/get-coin.mp3');
-          audio.play();
+          this.audioGetCoin.play();
           this.player.coins += 1;
           document.getElementsByClassName('coin')[this.player.coins-1].src = '../ressources/images/big-coin.png';
         }

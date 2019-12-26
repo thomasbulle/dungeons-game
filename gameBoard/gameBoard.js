@@ -6,6 +6,7 @@ let ctx = null;
 let level = 0;
 let board = null;
 let moveMonsterInterval = null;
+let coinInterval = null;
 
 const init = () => {
   board = new Board(config.board.width, config.board.height, level);
@@ -23,6 +24,7 @@ const init = () => {
     board.controls(ctx, event.key);
   });
   moveMonsterInterval = setInterval(() => board.moveMonster(ctx), 1000);
+  coinInterval = setInterval(() => board.coinNumber < 7 ? board.coinNumber++ : board.coinNumber = 1, 500);
   board.drawStats();
 
   // set phone controller

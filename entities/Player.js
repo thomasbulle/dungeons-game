@@ -5,6 +5,7 @@ class Player {
     this.life = life;
     this.coins = coins;
     this.direction = direction;
+    this.audioHit = new Audio('../ressources/sounds/hit.mp3');
   }
 
   move(x, y) {
@@ -19,8 +20,7 @@ class Player {
   }
 
   loseLife() {
-    const audio = new Audio('../ressources/sounds/hit.mp3');
-    audio.play();
+    this.audioHit.play();
     this.life -= 1;
     document.getElementsByClassName('heart')[this.life].src = '../ressources/images/heart-dead.png';
     // Game Over
