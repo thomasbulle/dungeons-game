@@ -5,11 +5,11 @@ let canvas = null;
 let ctx = null;
 let level = 0;
 let board = null;
-let moveMonsterInterval = null;
-let coinInterval = null;
+const moveMonsterInterval = () => setInterval(() => board.moveMonster(ctx), 1000);
+const coinInterval = () => setInterval(() => board.coinNumber < 7 ? board.coinNumber++ : board.coinNumber = 1, 500);
 
 const init = () => {
-  board = new Board(config.board.width, config.board.height, level);
+  board = new Board(config.board.width, config.board.height, level, callbackLevelChange);
   canvas = document.getElementById('gameBoard');
   ctx = canvas.getContext("2d");
   canvas.width = 450;
@@ -23,8 +23,8 @@ const init = () => {
     /^Arrow(Up|Down|Left|Right)$/g.test(event.key) && event.preventDefault();
     board.controls(ctx, event.key);
   });
-  moveMonsterInterval = setInterval(() => board.moveMonster(ctx), 1000);
-  coinInterval = setInterval(() => board.coinNumber < 7 ? board.coinNumber++ : board.coinNumber = 1, 500);
+  moveMonsterInterval();
+  coinInterval();
   board.drawStats();
 
   // set phone controller
@@ -39,5 +39,12 @@ const drawBoard = () => {
   board.draw(ctx);
   requestAnimationFrame(drawBoard);
 }
+
+const callbackLevelChange = newLevel => {
+  level = newLevel;
+  clearInterval(moveMonsterInterval);
+  clearInterval(coinInterval);
+  coinInterval();
+};
 
 window.onload = init;

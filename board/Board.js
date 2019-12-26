@@ -5,7 +5,7 @@ import config from '../config/config.js';
 import levels from './levels.js';
 
 class Board {
-  constructor(width, height, level) {
+  constructor(width, height, level, callbackLevelChange) {
     this.width = width;
     this.height = height;
     this.posPlayerX = 0;
@@ -16,6 +16,7 @@ class Board {
     this.player = null;
     this.audioGetCoin = new Audio('../ressources/sounds/get-coin.mp3');
     this.coinNumber = 1;
+    this.callbackLevelChange = callbackLevelChange;
 
     this.initBoard();
   }
@@ -212,6 +213,7 @@ class Board {
     this.initBoard();
     this.draw(ctx);
     this.drawStats();
+    this.callbackLevelChange(this.level);
   }
 }
 
